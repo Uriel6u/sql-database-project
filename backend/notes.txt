@@ -108,3 +108,11 @@ promotions
 stores
 users
 interest <----
+
+
+users test:
+email: johnDoe@gmail.com
+username: uriel6u
+password: 12345
+city: nashville
+state: tn
