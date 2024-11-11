@@ -15,3 +15,10 @@ Features
   Backend: Node.js, Python
   Frontend: React(javascript), HTML, CSS
   Tools: GitHub
+
+
+  ## Environment Setup
+
+1. Create a `.env` file in the root of your project directory.
+2. Copy the content from `.env.example` and replace `your_secret_key_here` with your own generated secret key.
+
