@@ -1,12 +1,14 @@
-
-
 # Import jsonify to return JSON responses
 from flask import Flask, jsonify, render_template, request, redirect, url_for, session
 from werkzeug.security import check_password_hash, generate_password_hash
 import mysql.connector
-app = Flask(__name__)
-app.secret_key = 'your_secret-key'
+from dotenv import load_dotenv
+import os
 
+load_dotenv()  # Load environment variables from .env file
+
+app = Flask(__name__)
+app.secret_key = os.environ.get('SECRET_KEY')
 try:
     db = mysql.connector.connect(
         host="localhost",
@@ -23,7 +25,7 @@ cursor = db.cursor(dictionary=True)
 
 @app.route("/")
 def home():
-    # if user is logged in, go to homeapage with logged in info
+    # if user is logged in, go to homepage with logged in info
     if 'username' in session:
             return render_template('home.html', username=session['username'])
     else:
@@ -52,30 +54,63 @@ def login():
 @app.route('/register', methods= ['GET','POST'])
 def register():
     if request.method == 'POST':
+        # Debugging line to print the form data to the console
+        print("Form data received:", request.form)
         username = request.form['username']
         pwd = request.form['password']
+        email = request.form['email']
+        city = request.form['city']
+        state = request.form['state']
 
-        #inset into table users code here
+        # Check if the username or email already exists
+        cursor.execute("SELECT * FROM users WHERE username = %s OR email = %s", (username, email))
+        existing_user = cursor.fetchone()
+
+        if existing_user:
+            return render_template('register.html', error="Username or email already exists. Please choose a different one.")
+        #insert new user infomation
         # Hash the password before storing it in the database
         hashed_password = generate_password_hash(pwd)
         # Insert the new user into the Users table (with a parameterized query)
-        query = "INSERT INTO users (username, password) VALUES (%s, %s)"
+        query = "INSERT INTO users (username, password, email, city, state) VALUES (%s, %s, %s, %s, %s)"
         try:
-            cursor.execute(query, (username, hashed_password))
+            cursor.execute(query, (username, hashed_password, email, city, state))
             db.commit()  # Commit the transaction to save changes
         except mysql.connector.Error as err:
-            print(f"Error: {err}")
-            return render_template('register.html', error="Registration failed. Try again.")
-        #after registering, redirect to login page
+            if err.errno == 1062:  # Error code for duplicate entry
+                print(f"Duplicate entry error: {err}")
+                return render_template('register.html', error="Registration failed. Email or username already exists.")
+            else:
+                print(f"Error: {err}")
+                return render_template('register.html', error="Registration failed. Try again.")
+        # After registering, redirect to the login page
         return redirect(url_for('login'))
     # render registration form
     return render_template('register.html')
-
+    
 
 @app.route('/logout')
 def logout():
      session.pop('username', None)
      return redirect(url_for('home'))
+
+@app.route('/check-secret')
+def check_secret():
+    return f"SECRET_KEY is: {app.secret_key}"
+
+@app.route('/check-db')
+def check_db():
+    try:
+        # Replace 'your_table' with an existing table name in your database
+        cursor.execute("SELECT * FROM users LIMIT 1")
+        result = cursor.fetchone()
+        if result:
+            return f"Database connection successful. Sample data: {result}"
+        else:
+            return "Database connection successful but no data found."
+    except mysql.connector.Error as err:
+        return f"Database connection failed: {err}"
+
 
 if __name__ == '__main__':
     app.run(debug=True)
