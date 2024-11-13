@@ -1,0 +1,118 @@
+RetailMeNot API:
+- RetailMeNot is a popular coupon site that offers an API for developers to access their coupon database.
+- Features: Retrieve coupons, deals, and promo codes from various retailers.
+- Website: RetailMeNot
+https://www.retailmenot.com/
+
+Honey API:
+- Honey, a popular browser extension and coupon site, offers APIs for developers to integrate coupon data.
+- Features: Access to promo codes and cash back offers.
+- Website: Honey
+
+
+
+
+
+https://publicapis.dev/category/shopping
+
+https://github.com/toddmotto/public-apis?tab=readme-ov-file#shopping
+
+--------------------------------------------------------
+References: 
+
+For user login/authentication: https://www.youtube.com/watch?v=lAY7nXh83fI&list=LL&index=1&t=170s
+Editing user tables: https://stackoverflow.com/questions/11448068/mysql-error-code-1175-during-update-in-mysql-workbench
+
+
+I have Set up Flask app, connected to MySQL, and added folder structure
+
+
+
+******************* IMPORTANT ***************************************
+Before starting new work, always pull the latest changes from the main branch:
+git checkout main
+git pull origin main
+
+----------------------------------------------------------------------------------
+brief guide to team members to help get started:
+On vs code studio,
+Make sure you have clone the repository and created your own branches.
+git checkout -b <branch-name> --Replace <branch-name> with a name your name or task you're working on
+git push origin <branch-name> --Push the branch to the remote repository so others can see it
+
+
+Now, we will set up your environment to match mines so the project works on your machines. 
+1.  Navigate to the Backend Directory: cd backend
+2.  Create a Virtual Environment: python -m venv venv
+3.  Activate the Virtual Environment: .\venv\Scripts\Activate
+4.  Once the virtual environment is activated, install all the necessary dependencies(contained in requirements.txt) by running
+    pip install -r requirements.txt
+
+
+Whenever you complete a task, add and commit your changes:
+git add .
+git commit -m "Describe what you did"
+
+Push Your Changes to Your Branch:
+git push origin <branch-name>
+
+
+After pushing changes to your branch:
+
+Go to your GitHub repository.
+Click on the "Pull Requests" tab.
+Click "New Pull Request" and choose your branch to merge into the main branch.
+You can add notes or descriptions on what you've done, and we will be notified.
+
+Pull Changes from Other Team Members:
+******************* IMPORTANT ***************************************
+Before starting new work, always pull the latest changes from the main branch:
+git checkout main
+git pull origin main
+------------------------------------------------------------------------------------------
+Important Notes
+--  Use notes.txt: Make sure to use notes.txt in the backend folder to add any references you use. 
+    I will be adding the sources i've been using here.
+--  Make Regular Commits: Commit frequently and push your changes often to keep the team updated. Whenever you make Commits,
+    it will be recorded to our github repository, so you can show you have been contributing to the project.
+
+-- Stay on Your Branch: Keep your work on your branch until it's ready to merge into main. 
+
+    ******************* IMPORTANT ***************************************
+--  Before starting new work, always pull the latest changes from the main branch:
+
+
+
+As i mention before, your first task can be working on the database 
+
+Create SQL Files for Database Tasks:
+
+create_tables.sql: Script for creating the tables.
+drop_tables.sql: Script for dropping the tables (to reset if needed).
+insert_data.sql: Script for inserting test data into the tables.
+
+For example, create a folder named database/ in the repository, and inside it, add the SQL files:
+
+if you want to work on something else, that is completly okay. If you want to work on some html,css, files you can get started 
+doing some basic templates.
+
+let us know if you encounter any problems and need help.
+
+
+TO DO:
+
+add interest tables. User -> multiple interest.references users
+
+products
+promotions
+stores
+users
+interest <----
+
+
+users test:
+email: johnDoe@gmail.com
+username: uriel6u
+password: 12345
+city: nashville
+state: tn
