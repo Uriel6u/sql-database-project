@@ -97,7 +97,7 @@ def register():
         city = request.form['city']
         state = request.form['state']
         account_type = request.form['account_type'] # to get option of users or business
-        # Print account_type to confirm the correct value
+        # testing print account_type to confirm the correct value
         print("Final account type before insert:", account_type)  # This should print 'user' or 'business'
         # Check if the username or email already exists
         cursor.execute("SELECT * FROM users WHERE username = %s OR email = %s", (username, email))
@@ -113,7 +113,7 @@ def register():
         try:
             cursor.execute(query, (username, name, hashed_password, email, city, state, account_type))
             db.commit()  # Commit the transaction to save changes
-              # Verify the saved account_type
+              # Verify the saved account_type testing part2
             cursor.execute("SELECT account_type FROM users WHERE username = %s", (username,))
             account_type_saved = cursor.fetchone()
             print("Account type saved in DB:", account_type_saved)
@@ -181,6 +181,26 @@ def profile():
     # Render profile page with user data and any messages
     return render_template('shoppingService/profile.html', user=user, message=locals().get('message'),current_page='profile')
 
+@app.route('/add_store', methods=['GET', 'POST'])
+def add_store():
+    # check to make sure user is logged in, also check to make sure account is business 
+    if 'username' not in session or session['account_type'] != 'business':
+        return "Access Denied: Only business accounts can add stores.", 403
+
+    if request.method == 'POST':
+        store_name = request.form['store_name']
+        location = request.form['location']
+        contact_info = request.form['contact_info']
+        user_id = session['user_id']  # get id of the logged-in business Account
+
+        query = "INSERT INTO Stores (store_name, location, contact_info, created_by_user) VALUES (%s, %s, %s, %s)"
+        cursor.execute(query, (store_name, location, contact_info, user_id))
+        db.commit()
+        # return the home page initially or if the form submission is invalid.
+        return redirect(url_for('home'))
+    
+        
+    return render_template('shoppingService/add_store.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
