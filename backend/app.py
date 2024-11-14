@@ -13,7 +13,7 @@ try:
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        password="uriel4sqlroshi$",
+        password="Jason3233@",
         database="shoppingdb"
     )
     cursor = db.cursor(dictionary=True)
@@ -43,6 +43,15 @@ def home():
         # If not logged in, redirect to the login page
         return redirect(url_for('login'))
 
+@app.route("/about")
+def about():
+    # Check if user is logged in
+    if 'username' in session:
+        # If logged in, render the home page with the username
+        return render_template('shoppingService/home.html')
+    else:
+        # If not logged in, redirect to the login page
+        return redirect(url_for('login'))
 
 #login functionality
 @app.route('/login', methods= ['GET','POST'])
