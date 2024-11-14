@@ -38,17 +38,27 @@ def home():
     # Check if user is logged in
     if 'username' in session:
         # If logged in, render the home page with the username
-        return render_template('shoppingService/home.html', username=session['username'])
+        return render_template('shoppingService/home.html', username=session['username'],current_page='home')
     else:
         # If not logged in, redirect to the login page
         return redirect(url_for('login'))
+    
+@app.route("/search")
+def search():
+    if 'username' in session:
+        # If logged in, render the home page with the username
+        return render_template('shoppingService/search.html', username=session['username'],current_page='search')
+    else:
+        # If not logged in, redirect to the login page
+        return redirect(url_for('login'))
+    
 
 @app.route("/about")
 def about():
     # Check if user is logged in
     if 'username' in session:
         # If logged in, render the home page with the username
-        return render_template('shoppingService/home.html')
+        return render_template('shoppingService/about.html', current_page='about')
     else:
         # If not logged in, redirect to the login page
         return redirect(url_for('login'))
@@ -161,7 +171,7 @@ def profile():
     user = cursor.fetchone()
 
     # Render profile page with user data and any messages
-    return render_template('shoppingService/profile.html', user=user, message=locals().get('message'))
+    return render_template('shoppingService/profile.html', user=user, message=locals().get('message'),current_page='profile')
 
 
 if __name__ == '__main__':

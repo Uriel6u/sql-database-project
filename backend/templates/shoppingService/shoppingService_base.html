@@ -37,7 +37,7 @@
     }
 
     .active {
-    background-color: #04AA6D;
+    background-color: #6BADCE;
         }
 
     </style>
@@ -46,9 +46,10 @@
 <body>
     <!--Nav Bar-->
     <ul class="nav_bar">
-        <li><a href="/home">Home</a></li>
-        <li><a href="/about">About</a></li>
-        <li style="float: right;"><a href="/profile">Profile</a></li>
+        <li><a href="/home" class="{% if current_page == 'home' %}active{% endif %}">Home</a></li>
+        <li><a href="/search"class="{% if current_page == 'search' %}active{% endif %}" >Search</a></li>
+        <li><a href="/about" class="{% if current_page == 'about' %}active{% endif %}">About</a></li>
+        <li style="float: right;"><a href="/profile" class="{% if current_page == 'profile' %}active{% endif %}">Profile</a></li>
         
     </ul>
 
