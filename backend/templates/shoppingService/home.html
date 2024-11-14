@@ -1,8 +1,8 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Home Page</title>
-    </head>
+{% extends "shoppingService/shoppingService_base.html" %}
+
+<title>{% block title %}Home{% endblock %}</title>
+
+{% block content %}
 
 
     <body>
@@ -13,10 +13,6 @@
         {%else %}
             <p>You are not logged in, please <a href="/login">login</a> to access the home page.</p>
         {% endif %}
-
-
-
         
     </body>
-    
-</html>
+{% endblock %}
