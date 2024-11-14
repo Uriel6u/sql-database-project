@@ -24,12 +24,25 @@ except mysql.connector.Error as err:
 cursor = db.cursor(dictionary=True)
 
 @app.route("/")
-def home():
-    # if user is logged in, go to homepage with logged in info
+def root():
+    # Check if the user is logged in
     if 'username' in session:
-            return render_template('shoppingService/home.html', username=session['username'])
+        # Redirect to the home page if logged in
+        return redirect(url_for('home'))
     else:
-         return render_template('shoppingService/home.html')
+        # Redirect to the login page if not logged in
+        return redirect(url_for('login'))
+
+@app.route("/home")
+def home():
+    # Check if user is logged in
+    if 'username' in session:
+        # If logged in, render the home page with the username
+        return render_template('shoppingService/home.html', username=session['username'])
+    else:
+        # If not logged in, redirect to the login page
+        return redirect(url_for('login'))
+
 
 #login functionality
 @app.route('/login', methods= ['GET','POST'])
@@ -57,6 +70,7 @@ def register():
         # Debugging line to print the form data to the console
         print("Form data received:", request.form)
         username = request.form['username']
+        name = request.form['name']
         pwd = request.form['password']
         email = request.form['email']
         city = request.form['city']
@@ -72,9 +86,9 @@ def register():
         # Hash the password before storing it in the database
         hashed_password = generate_password_hash(pwd)
         # Insert the new user into the Users table (with a parameterized query)
-        query = "INSERT INTO users (username, password, email, city, state) VALUES (%s, %s, %s, %s, %s)"
+        query = "INSERT INTO users (username, name, password, email, city, state) VALUES (%s, %s, %s, %s, %s, %s)"
         try:
-            cursor.execute(query, (username, hashed_password, email, city, state))
+            cursor.execute(query, (username, name, hashed_password, email, city, state))
             db.commit()  # Commit the transaction to save changes
         except mysql.connector.Error as err:
             if err.errno == 1062:  # Error code for duplicate entry
