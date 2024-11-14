@@ -11,10 +11,10 @@ app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY')
 try:
     db = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="Jason3233@",
-        database="shoppingdb"
+        host=os.getenv('DB_HOST'),
+        user=os.getenv('DB_USER'),
+        password=os.getenv('DB_PASSWORD'),
+        database=os.getenv('DB_NAME')
     )
     cursor = db.cursor(dictionary=True)
 except mysql.connector.Error as err:
