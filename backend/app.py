@@ -71,12 +71,14 @@ def login():
             pwd = request.form['password']
            
             # Use a parameterized query to prevent SQL injection
-            query = "SELECT username, password FROM users WHERE username = %s"
+            query = "SELECT user_ID, username, password, account_type FROM Users WHERE username = %s"
             cursor.execute(query, (username,))
             user = cursor.fetchone()
 
             if user and check_password_hash(user['password'], pwd):
-                session['username'] = user['username']
+                session['user_id'] = user['user_ID'] # store user id
+                session['username'] = user['username']# store username 
+                session['account_type'] = user['account_type'] # store account type in session
                 return redirect(url_for('home'))
             else:
                 return render_template('userAuth/login.html', error='Invalid username or password')
@@ -88,13 +90,15 @@ def register():
     if request.method == 'POST':
         # Debugging line to print the form data to the console
         print("Form data received:", request.form)
-        username = request.form['username']
+        username = request.form['username'] # basic info
         name = request.form['name']
         pwd = request.form['password']
         email = request.form['email']
         city = request.form['city']
         state = request.form['state']
-
+        account_type = request.form['account_type'] # to get option of users or business
+        # Print account_type to confirm the correct value
+        print("Final account type before insert:", account_type)  # This should print 'user' or 'business'
         # Check if the username or email already exists
         cursor.execute("SELECT * FROM users WHERE username = %s OR email = %s", (username, email))
         existing_user = cursor.fetchone()
@@ -105,10 +109,14 @@ def register():
         # Hash the password before storing it in the database
         hashed_password = generate_password_hash(pwd)
         # Insert the new user into the Users table (with a parameterized query)
-        query = "INSERT INTO users (username, name, password, email, city, state) VALUES (%s, %s, %s, %s, %s, %s)"
+        query = "INSERT INTO users (username, name, password, email, city, state, account_type) VALUES (%s, %s, %s, %s, %s, %s, %s)"
         try:
-            cursor.execute(query, (username, name, hashed_password, email, city, state))
+            cursor.execute(query, (username, name, hashed_password, email, city, state, account_type))
             db.commit()  # Commit the transaction to save changes
+              # Verify the saved account_type
+            cursor.execute("SELECT account_type FROM users WHERE username = %s", (username,))
+            account_type_saved = cursor.fetchone()
+            print("Account type saved in DB:", account_type_saved)
         except mysql.connector.Error as err:
             if err.errno == 1062:  # Error code for duplicate entry
                 print(f"Duplicate entry error: {err}")
