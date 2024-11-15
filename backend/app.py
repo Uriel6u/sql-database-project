@@ -202,5 +202,35 @@ def add_store():
         
     return render_template('shoppingService/add_store.html')
 
+@app.route('/add_promotions', methods=['GET', 'POST'])
+def add_promotions():
+    # check to make sure user is logged in, also check to make sure account is business 
+    if 'username' not in session or session['account_type'] != 'business':
+        return "Access Denied: Only business accounts can add stores.", 403
+
+    if request.method == 'POST':
+        store_id = request.form['store_id']
+        product_id = request.form['product_id']
+        discount = request.form['discount']
+        description = request.form['description']
+        start_date = request.form['start_date']
+        end_date = request.form['end_date']
+
+
+        query = "INSERT INTO Promotions (store_id, product_id, discount, description, start_date, end_date) VALUES (%s, %s, %s, %s, %s, %s)"
+        cursor.execute(query, (store_id, product_id, discount, description, start_date, end_date))
+        db.commit()
+        # return the home page initially or if the form submission is invalid.
+        return redirect(url_for('home'))
+     # here we fetch the stores that belong to this store id, 
+    cursor.execute("SELECT store_id, store_name FROM Stores WHERE created_by_user = %s", (session['user_id'],))
+    stores = cursor.fetchall()
+   
+    # here we must use fetch to pull products data
+    cursor.execute("SELECT product_id, product_name FROM Products")
+    products = cursor.fetchall()
+    #render our add promotions page and pass stores n products variables to be visible on template
+    return render_template('shoppingService/add_promotions.html', stores=stores, products=products)
+
 if __name__ == '__main__':
     app.run(debug=True)
