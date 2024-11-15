@@ -1,0 +1,66 @@
+{% extends "shoppingService/shoppingService_base.html" %}
+
+{% block title %}Promotion{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h3>Add Promotion</h3>
+
+    <!-- Start of the form to add a promotion -->
+    <form method="POST" action="/add_promotion">
+
+        <!-- Dropdown for selecting a store -->
+        <div class="mb-3">
+            <label for="store_id" class="form-label">Select Store</label>
+            <select class="form-control" id="store_id" name="store_id" required>
+                {% for store in stores %} <!-- Loop through each store passed from the app.py -->
+                    <!-- each store option in the dropdown has the store_id as value and store_name as display -->
+                    <option value="{{ store.store_id }}">{{ store.store_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Dropdown for selecting a specific product -->
+        <div class="mb-3">
+            <label for="product_id" class="form-label">Select Product</label>
+            <select class="form-control" id="product_id" name="product_id" required>
+                {% for product in products %} <!-- Loop through each product passed from the backend -->
+                    <!-- Each product option in the dropdown has the product_id as value and product_name as display text -->
+                    <option value="{{ product.product_id }}">{{ product.product_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Input for the discount percentage -->
+        <div class="mb-3">
+            <label for="discount" class="form-label">Discount</label>
+            <!-- Number input for discount percentage with step to allow decimals -->
+            <input type="number" class="form-control" id="discount" name="discount" step="0.01" required>
+        </div>
+
+        <!-- Input for the description of the promotion -->
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <!-- Textarea for a more detailed promotion description -->
+            <textarea class="form-control" id="description" name="description" required></textarea>
+        </div>
+
+        <!-- Input for selecting the start date of promotion -->
+        <div class="mb-3">
+            <label for="start_date" class="form-label">Start Date</label>
+            <!-- Date input for start date of the promotion -->
+            <input type="date" class="form-control" id="start_date" name="start_date" required>
+        </div>
+
+        <!-- Input for selecting the end date of promotion -->
+        <div class="mb-3">
+            <label for="end_date" class="form-label">End Date</label>
+            <!-- Date input for end date of the promotion -->
+            <input type="date" class="form-control" id="end_date" name="end_date" required>
+        </div>
+
+        <!--  add the promotion -->
+        <button type="submit" class="btn btn-primary">Add Promotion</button>
+    </form>
+</div>
+{% endblock %}
