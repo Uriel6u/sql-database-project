@@ -234,5 +234,25 @@ def add_promotions():
     #render our add promotions page and pass stores n products variables to be visible on template
     return render_template('shoppingService/add_promotions.html', stores=stores, products=products, account_type=account_type, current_page='add_promotions')
 
+@app.route('/add_product', methods=['GET', 'POST'])
+def add_product():
+
+    account_type = session['account_type']
+
+    if request.method == 'POST':
+        product_name = request.form['product_name']
+        category = request.form['category']
+        price = request.form['price']
+        
+
+        query = "INSERT INTO Products (product_name, category, price) VALUES (%s, %s, %s)"
+        cursor.execute(query, (product_name, category, price))
+        db.commit()
+        # return the home page initially or if the form submission is invalid.
+        return redirect(url_for('home'))
+    
+        
+    return render_template('shoppingService/add_product.html', account_type=account_type, current_page='add_product')
+
 if __name__ == '__main__':
     app.run(debug=True)

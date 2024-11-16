@@ -1,0 +1,42 @@
+{% extends "shoppingService/shoppingService_base.html" %}
+
+{% block title %}add product{% endblock %}
+
+{% block content %}
+<!--basic form submission here-->
+<div class="container">
+    <h3>Add Product</h3>
+    <form method="POST" action="/add_product">
+        <div class="mb-3">
+            <label for="product_name" class="form-label">Enter product name</label>
+            <input type="text" class="form-control" id="product_name" name="product_name" required>
+        </div>
+         <!-- Category Dropdown -->
+         <div class="mb-3">
+            <label for="category" class="form-label">Product Category</label>
+            <select 
+                class="form-select" 
+                id="category" 
+                name="category" 
+                required>
+                <option value="" disabled selected>Select Product Type</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Clothes">Clothes</option>
+                <option value="Food">Food</option>
+                <option value="Home">Home</option>
+                <option value="Sports">Sports</option>
+                <option value="Books">Books</option>
+                <option value="Games">Games</option>
+                <option value="Personal Care">Personal Care</option>
+                <option value="Furniture">Furniture</option>
+                <option value="Arts">Arts</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="price" class="form-label">Price: </label>
+            <input type="text" class="form-control" id="price" name="price" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Product</button>
+    </form>
+</div>
+{% endblock %}
