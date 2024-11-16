@@ -38,7 +38,8 @@ def home():
     # Check if user is logged in
     if 'username' in session:
         # If logged in, render the home page with the username
-        return render_template('shoppingService/home.html', username=session['username'],current_page='home')
+        account_type = session['account_type']
+        return render_template('shoppingService/home.html', username=session['username'], account_type=account_type, current_page='home')
     else:
         # If not logged in, redirect to the login page
         return redirect(url_for('login'))
@@ -47,7 +48,8 @@ def home():
 def search():
     if 'username' in session:
         # If logged in, render the home page with the username
-        return render_template('shoppingService/search.html', username=session['username'],current_page='search')
+        account_type = session['account_type']
+        return render_template('shoppingService/search.html', username=session['username'], account_type=account_type, current_page='search')
     else:
         # If not logged in, redirect to the login page
         return redirect(url_for('login'))
@@ -58,7 +60,8 @@ def about():
     # Check if user is logged in
     if 'username' in session:
         # If logged in, render the home page with the username
-        return render_template('shoppingService/about.html', current_page='about')
+        account_type = session['account_type']
+        return render_template('shoppingService/about.html', account_type=account_type, current_page='about')
     else:
         # If not logged in, redirect to the login page
         return redirect(url_for('login'))
@@ -158,6 +161,7 @@ def profile():
         return redirect(url_for('login'))
 
     username = session['username']
+    account_type = session['account_type']
 
     if request.method == 'POST':
         # Get new profile information from the form
@@ -179,13 +183,12 @@ def profile():
     user = cursor.fetchone()
 
     # Render profile page with user data and any messages
-    return render_template('shoppingService/profile.html', user=user, message=locals().get('message'),current_page='profile')
+    return render_template('shoppingService/profile.html', user=user, message=locals().get('message'), account_type=account_type, current_page='profile')
 
 @app.route('/add_store', methods=['GET', 'POST'])
 def add_store():
-    # check to make sure user is logged in, also check to make sure account is business 
-    if 'username' not in session or session['account_type'] != 'business':
-        return "Access Denied: Only business accounts can add stores.", 403
+
+    account_type = session['account_type']
 
     if request.method == 'POST':
         store_name = request.form['store_name']
@@ -200,13 +203,12 @@ def add_store():
         return redirect(url_for('home'))
     
         
-    return render_template('shoppingService/add_store.html')
+    return render_template('shoppingService/add_store.html', account_type=account_type, current_page='add_store')
 
 @app.route('/add_promotions', methods=['GET', 'POST'])
 def add_promotions():
-    # check to make sure user is logged in, also check to make sure account is business 
-    if 'username' not in session or session['account_type'] != 'business':
-        return "Access Denied: Only business accounts can add stores.", 403
+
+    account_type = session['account_type']
 
     if request.method == 'POST':
         store_id = request.form['store_id']
@@ -230,7 +232,7 @@ def add_promotions():
     cursor.execute("SELECT product_id, product_name FROM Products")
     products = cursor.fetchall()
     #render our add promotions page and pass stores n products variables to be visible on template
-    return render_template('shoppingService/add_promotions.html', stores=stores, products=products)
+    return render_template('shoppingService/add_promotions.html', stores=stores, products=products, account_type=account_type, current_page='add_promotions')
 
 if __name__ == '__main__':
     app.run(debug=True)
