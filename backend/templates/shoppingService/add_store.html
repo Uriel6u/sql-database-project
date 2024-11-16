@@ -3,7 +3,7 @@
 {% block title %}add store{% endblock %}
 
 {% block content %}
-<!--basic gpt form submission here-->
+<!--basic form submission here-->
 <div class="container">
     <h3>Add Store</h3>
     <form method="POST" action="/add_store">
@@ -19,6 +19,16 @@
             <label for="contact_info" class="form-label">Contact Number</label>
             <input type="text" class="form-control" id="contact_info" name="contact_info" required>
         </div>
+        <select name="store_type" required>
+            <option value="" disabled selected>Select Store Type</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Grocery">Grocery</option>
+            <option value="Retail">Retail</option>
+            <option value="Clothing">Clothing</option>
+            <option value="Home">Home</option>
+            <option value="Home">restaurant</option>
+            <option value="Other">Other</option>
+        </select><br>
         <button type="submit" class="btn btn-primary">Add Store</button>
     </form>
 </div>
