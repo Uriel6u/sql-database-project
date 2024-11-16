@@ -167,6 +167,12 @@
     <ul class="nav_bar">
         <li><a href="/home" class="{% if current_page == 'home' %}active{% endif %}">Home</a></li>
         <li><a href="/search"class="{% if current_page == 'search' %}active{% endif %}" >Search</a></li>
+
+        {% if account_type == 'business' %}
+            <li><a href="/add_promotions" class="{% if current_page == 'add_promotions' %}active{% endif %}">Add Promotions</a></li>
+            <li><a href="/add_store" class="{% if current_page == 'add_store' %}active{% endif %}">Add Store</a></li>
+        {% endif %}
+
         <li><a href="/about" class="{% if current_page == 'about' %}active{% endif %}">About</a></li>
         <li style="float: right;"><a href="/profile" class="{% if current_page == 'profile' %}active{% endif %}">Profile</a></li>
         
