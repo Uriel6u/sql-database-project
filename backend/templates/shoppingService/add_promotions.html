@@ -6,10 +6,10 @@
 <div class="container">
     <h3>Add Promotion</h3>
 
-    <!-- Start of the form to add a promotion -->
-    <form method="POST" action="/add_promotion">
+    <!-- form start here -->
+    <form method="POST" action="/add_promotions">
 
-        <!-- Dropdown for selecting a store -->
+        <!-- Dropdown for selecting stores -->
         <div class="mb-3">
             <label for="store_id" class="form-label">Select Store</label>
             <select class="form-control" id="store_id" name="store_id" required>
@@ -25,22 +25,23 @@
             <label for="product_id" class="form-label">Select Product</label>
             <select class="form-control" id="product_id" name="product_id" required>
                 {% for product in products %} <!-- Loop through each product passed from the backend -->
-                    <!-- Each product option in the dropdown has the product_id as value and product_name as display text -->
+                    <!-- Each product from dropdown has the product id as value and product name as display text -->
                     <option value="{{ product.product_id }}">{{ product.product_name }}</option>
                 {% endfor %}
             </select>
         </div>
 
-        <!-- Input for the discount percentage -->
+        <!-- Input for the discount number -->
         <div class="mb-3">
             <label for="discount" class="form-label">Discount</label>
             <!-- Number input for discount percentage with step to allow decimals -->
             <input type="number" class="form-control" id="discount" name="discount" step="0.01" required>
+            <span class="ms-2">% off</span>
         </div>
 
         <!-- Input for the description of the promotion -->
         <div class="mb-3">
-            <label for="description" class="form-label">Description</label>
+            <label for="description" class="form-label">Description: </label><br>
             <!-- Textarea for a more detailed promotion description -->
             <textarea class="form-control" id="description" name="description" required></textarea>
         </div>
