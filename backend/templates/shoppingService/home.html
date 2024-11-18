@@ -13,6 +13,22 @@
         {%else %}
             <p>You are not logged in, please <a href="/login">login</a> to access the home page.</p>
         {% endif %}
+        <div class="container mt-4">
+            <h2 class="text-center">Search Results</h2>
+            <div class="row">
+                {% for result in results %}
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ result.name }}</h5>
+                            <p class="card-text">{{ result.details }}</p>
+                            <a href="#" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
         
     </body>
 {% endblock %}

@@ -193,11 +193,13 @@ def add_store():
     if request.method == 'POST':
         store_name = request.form['store_name']
         location = request.form['location']
+        city = request.form['city']
         contact_info = request.form['contact_info']
+        store_type = request.form['store_type']
         user_id = session['user_id']  # get id of the logged-in business Account
 
-        query = "INSERT INTO Stores (store_name, location, contact_info, created_by_user) VALUES (%s, %s, %s, %s)"
-        cursor.execute(query, (store_name, location, contact_info, user_id))
+        query = "INSERT INTO Stores (store_name, location, city, contact_info, store_type, created_by_user) VALUES (%s, %s, %s, %s, %s, %s)"
+        cursor.execute(query, (store_name, location, city, contact_info, store_type, user_id))
         db.commit()
         # return the home page initially or if the form submission is invalid.
         return redirect(url_for('home'))
