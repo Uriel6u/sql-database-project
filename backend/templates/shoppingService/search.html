@@ -4,8 +4,46 @@
 
 {% block content %}
 
+    <!-- search page header -->
+    <div class="searchHeader">
+        <h1>Search By:</h1>
+    </div>
 
-    <h1>Search</h1>
+    <!-- search by toogle switch -->
+     <div class="toggle-contianer">
+            <input type="checkbox" id="toggle" class="toggleCheckbox"/>
+            <label for="toggle" class="toggleSwitchcontianer">
+                <div>Stores</div>
+                <div>Promotions</div>
+     </div>
     
+     <!-- Content for Stores -->
+    <div id="storesContent" class="content-section">
+        <h2>Stores</h2>
+        <p>Here is the content for Stores.</p>
+    </div>
+
+    <!-- Content for Promotions -->
+    <div id="promotionsContent" class="content-section" style="display: none;">
+        <h2>Promotions</h2>
+        <p>Here is the content for Promotions.</p>
+    </div>
+
+    <script>
+        document.getElementById('toggle').addEventListener('change', function () {
+            var storesContent = document.getElementById('storesContent');
+            var promotionsContent = document.getElementById('promotionsContent');
+
+            if (this.checked) {
+                // Show Promotions and hide Stores
+                storesContent.style.display = 'none';
+                promotionsContent.style.display = 'block';
+            } else {
+                // Show Stores and hide Promotions
+                storesContent.style.display = 'block';
+                promotionsContent.style.display = 'none';
+            }
+        });
+    </script>
 
 {% endblock %}
