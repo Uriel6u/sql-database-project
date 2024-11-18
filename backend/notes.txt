@@ -124,3 +124,19 @@ username: bryan6u
 password: 1234567
 city: Nashville
 state: TN
+
+
+
+Name: Bob
+email: bob.77@gmail.com
+username: bobby77
+password: 12345678
+city: Nashville
+state: TN
+
+Name: Maria
+email: mariac@gmail.com
+username: MariaC
+password: 1234
+city: Nashville
+state: TN
