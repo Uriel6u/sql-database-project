@@ -119,7 +119,7 @@
         margin-bottom: 20px;
     }
 
-    /* styles for the yech stack section */
+    /* styles for the tech stack section */
     .techStack{
         width: 100%;
         padding-top: 100px;
@@ -144,8 +144,8 @@
         display: flex;
         justify-content: space-between;
         gap: 10%;
-        margin-left: 30%;
-        margin-right: 30%;
+        margin-left: 20%;
+        margin-right: 20%;
     }
 
     .techBox{
@@ -159,6 +159,87 @@
         margin-bottom: 20px;
     }
 
+
+    /* search page styles */
+
+    /* search header */
+    .searchHeader{
+        text-align: center;
+        margin-bottom: 20px; /* Space below the header */
+        font-size: 18px; /* Adjust size as needed */
+        font-weight: bold; /* Make it stand out */
+    }
+
+    /* styles for the toggle button */
+    .toggle-contianer{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-top: 15px;
+    }
+
+    .toggleSwitchcontianer{
+        position: absolute;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        width: fit-content;
+        border: 3px solid #343434;
+        border-radius: 20px;
+        background: #343434;
+        font-weight: bold;
+        color: #343434;
+        cursor: pointer;
+    }
+    .toggleSwitchcontianer::before{
+        content: '';
+        position: absolute;
+        width: 50%;
+        height: 100%;
+        left: 0%;
+        border-radius:20px;
+        background: white;
+        transition: all 0.3s;
+    }
+
+    .toggleCheckbox:checked +
+    .toggleSwitchcontianer::before{
+        left: 50%;
+    }
+
+    .toggleSwitchcontianer div{
+        padding: 6px;
+        text-align: center;
+        z-index: 1;
+    }
+
+    .toggleCheckbox{
+        display: none;   
+    }
+
+    .toggleCheckbox:checked +
+    .toggleSwitchcontianer div:first-child{
+        color: white;
+        transition: color 0.3s;
+    }
+
+    .toggleCheckbox:checked + 
+    .toggleSwitchcontianer div:last-child{
+        color: #343434;
+        transition: color 0.3s;
+    }
+
+    .toggleCheckbox + 
+    .toggleSwitchcontianer div:first-child{
+        color: #343434;
+        transition: color 0.3s;
+    }
+
+    .toggleCheckbox + 
+    .toggleSwitchcontianer div:last-child{
+        color: white;
+        transition: color 0.3s;
+    }
+
     </style>
 </head>
 
@@ -170,8 +251,8 @@
 
         {% if account_type == 'business' %}
             <li><a href="/add_promotions" class="{% if current_page == 'add_promotions' %}active{% endif %}">Add Promotions</a></li>
-            <li><a href="/add_store" class="{% if current_page == 'add_store' %}active{% endif %}">Add Store</a></li>
             <li><a href="/add_product" class="{% if current_page == 'add_product' %}active{% endif %}">Add Product</a></li>
+            <li><a href="/add_store" class="{% if current_page == 'add_store' %}active{% endif %}">Add Store</a></li>
         {% endif %}
 
         <li><a href="/about" class="{% if current_page == 'about' %}active{% endif %}">About</a></li>
