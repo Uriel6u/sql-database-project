@@ -17,19 +17,98 @@
                 <div>Promotions</div>
      </div>
     
-     <!-- Content for Stores -->
+     <!-- Content for search Stores -->
     <div id="storesContent" class="content-section">
-        <h2>Stores</h2>
-        <p>Here is the content for Stores.</p>
+
+        <div class="storenameInputContainer">
+            <input type="text" id="storeSearchInput" class="storeSearch" placeholder="Store Name.."/>
+        </div>
+
+        <div class="storeDropDownFilterContainer">
+            <div>
+                <select class="storeTypeDropdown" name="store_type" required>
+                    <option value="" disabled selected>Select Store Type</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Grocery">Grocery</option>
+                    <option value="Retail">Retail</option>
+                    <option value="Clothing">Clothing</option>
+                    <option value="Home">Home</option>
+                    <option value="Home">restaurant</option>
+                    <option value="Other">Other</option>
+                </select><br>
+            </div>
+            <div>
+                <select class="storeTypeDropdown" name="store_city" required>
+                    <option value="" disabled selected>Select City</option>
+                </select><br>
+            </div>
+        </div>
+
+
     </div>
 
-    <!-- Content for Promotions -->
+    <!-- Content for search Promotions -->
     <div id="promotionsContent" class="content-section" style="display: none;">
-        <h2>Promotions</h2>
-        <p>Here is the content for Promotions.</p>
+
+        <!-- range slider -->
+        <div class="discountRangeContainer">
+            <div class="card">
+
+                <h2 class="discountHeader">Discount Range</h2>
+
+                <div class="discount-content">
+                    <div>
+                        <label class="discountText">Min % Off</label>
+                        <p class="discountValue" id="min-value">0%</p>
+                    </div>
+
+                    <div>
+                        <label class="discountText">Max % Off</label>
+                        <p class="discountValue" id="max-value">100%</p>
+                    </div>
+
+                </div>
+
+                <div class="range-slider">
+                    <div class="range-fill"></div>
+
+                    <input
+                        type="range"
+                        id="min-discount"
+                        class="min-discount"
+                        value="25"
+                        min="0"
+                        max="100"
+                        step="1"
+                    />
+                    <input
+                        type="range"
+                        id="max-discount"
+                        class="max-discount"
+                        value="75"
+                        min="0"
+                        max="100"
+                        step="1"
+                    />
+                </div>
+            </div>
+        </div>
+
+        <!-- filter drop downs -->
+        <div class="discountDropDownFilterContainer">
+            <div>
+                <select class="discountTypeDropdown" name="city" required>
+                    <option value="" disabled selected>Select City</option>
+                </select><br>
+            </div>
+        </div>
+        
     </div>
 
+
+    <!-- script for the toogle button and range slider -->
     <script>
+        // toogle button script
         document.getElementById('toggle').addEventListener('change', function () {
             var storesContent = document.getElementById('storesContent');
             var promotionsContent = document.getElementById('promotionsContent');
@@ -44,6 +123,43 @@
                 promotionsContent.style.display = 'none';
             }
         });
+
+
+        // range slider script
+        const minInput = document.getElementById("min-discount");
+        const maxInput = document.getElementById("max-discount");
+        const minValueDisplay = document.getElementById("min-value");
+        const maxValueDisplay = document.getElementById("max-value");
+
+        // Function to update the range fill and validate range
+        function validateRange() {
+            let minDiscount = parseInt(minInput.value);
+            let maxDiscount = parseInt(maxInput.value);
+
+            if (minDiscount > maxDiscount) {
+                [minDiscount, maxDiscount] = [maxDiscount, minDiscount]; // Swap values
+            }
+
+            minValueDisplay.innerHTML = minDiscount + "%";
+            maxValueDisplay.innerHTML = maxDiscount + "%";
+
+            // Update range fill (if desired)
+            const rangeFill = document.querySelector(".range-fill");
+            const totalRange = maxInput.max - minInput.min;
+            const minPercent = ((minDiscount - minInput.min) / totalRange) * 100;
+            const maxPercent = ((maxDiscount - minInput.min) / totalRange) * 100;
+
+            rangeFill.style.left = minPercent + "%";
+            rangeFill.style.right = (100 - maxPercent) + "%";
+        }
+
+        // Add event listeners to range inputs
+        minInput.addEventListener("input", validateRange);
+        maxInput.addEventListener("input", validateRange);
+
+        // Initial call to set the range display
+        validateRange();
     </script>
+    
 
 {% endblock %}
