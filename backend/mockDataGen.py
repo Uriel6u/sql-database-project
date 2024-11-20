@@ -9,19 +9,17 @@ from faker import Faker
 from datetime import datetime, date
 load_dotenv()  # Load environment variables from .env file
 
-app = Flask(__name__)
-app.secret_key = os.environ.get('SECRET_KEY')
+
 try:
     db = mysql.connector.connect(
-    host=os.getenv('DB_HOST', 'localhost'),
-    user=os.getenv('DB_USER', 'root'),
-    password=os.getenv('DB_PASSWORD', 'uriel4sqlroshi$'),
-    database=os.getenv('DB_NAME', 'shoppingdb')
-)
-    cursor = db.cursor(dictionary=True)  # Enables dictionary-style access
+        host=os.getenv('DB_HOST'),
+        user=os.getenv('DB_USER'),
+        password=os.getenv('DB_PASSWORD'),
+        database=os.getenv('DB_NAME')
+    )
+    cursor = db.cursor(dictionary=True)
 except mysql.connector.Error as err:
     print(f"Error: {err}")
-
 
 
 
