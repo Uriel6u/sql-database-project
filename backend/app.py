@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from werkzeug.security import check_password_hash, generate_password_hash
 import mysql.connector
 from dotenv import load_dotenv
+from collections import defaultdict
 import os
 
 load_dotenv()  # Load environment variables from .env file
@@ -39,13 +40,59 @@ def home():
     if 'username' in session:
         # If logged in, render the home page with the username
         account_type = session['account_type']
-        return render_template('shoppingService/home.html', username=session['username'], account_type=account_type, current_page='home')
+        top_promotions = get_top_promotions()  # Get the top promotions
+        return render_template(
+            'shoppingService/home.html',
+            username=session['username'],
+            account_type=account_type,
+            current_page='home',
+            top_promotions=top_promotions  # Pass to the template
+        )
     else:
         # If not logged in, redirect to the login page
         return redirect(url_for('login'))
     
+@app.route("/get_top_promotions", methods=['POST'])
+def get_top_promotions():
+    query = """
+    SELECT 
+        p.promo_id, 
+        p.discount, 
+        p.description, 
+        s.store_name, 
+        s.location, 
+        pr.category
+    FROM Promotions p
+    JOIN Stores s ON p.store_id = s.store_id
+    JOIN Products pr ON p.product_id = pr.product_id
+    """
+    cursor.execute(query)
+    promotions = cursor.fetchall()
+
+    if not promotions:
+        print("No promotions found.")  # Debugging line
+        return {}
+
+    # Group promotions by category and sort each category's promotions by discount
+    grouped_promotions = defaultdict(list)
+    for promo in promotions:
+        grouped_promotions[promo['category']].append(promo)
+
+    # For each category, sort the promotions by discount and get top 4
+    top_promotions = {}
+    for category, promos in grouped_promotions.items():
+        sorted_promos = sorted(promos, key=lambda x: x['discount'], reverse=True)  # Sort by discount
+        top_promotions[category] = sorted_promos[:4]  # Take only the top 4
+
+    return top_promotions
+
+    
 @app.route('/search', methods=['GET'])
 def search():
+
+    # Fetch the account type in session
+    account_type = session['account_type']
+
     # Fetch cities for dropdown
     cursor.execute("SELECT DISTINCT city FROM Stores")
     cities = [row['city'] for row in cursor.fetchall()]
@@ -64,6 +111,7 @@ def search():
 
     return render_template(
         'shoppingService/search.html',
+        account_type=account_type,
         cities=cities,
         store_types=store_types,
         product_categories=product_categories,
@@ -77,6 +125,10 @@ def search():
 
 @app.route('/search_stores', methods=['POST'])
 def search_stores():
+
+    # Fetch the account type in session
+    account_type = session['account_type']
+
     # Fetch cities for dropdown
     cursor.execute("SELECT DISTINCT city FROM Stores")
     cities = [row['city'] for row in cursor.fetchall()]
@@ -112,6 +164,7 @@ def search_stores():
 
     return render_template(
         'shoppingService/search.html',
+        account_type=account_type,
         stores=stores,
         promotions=[],
         search_type='stores',
@@ -123,6 +176,10 @@ def search_stores():
     
 @app.route('/search_promotions', methods=['POST'])
 def search_promotions():
+
+    # Fetch the account type in session
+    account_type = session['account_type']
+
     # Fetch cities for dropdown
     cursor.execute("SELECT DISTINCT city FROM Stores")
     cities = [row['city'] for row in cursor.fetchall()]
@@ -162,6 +219,7 @@ def search_promotions():
 
     return render_template(
         'shoppingService/search.html',
+        account_type=account_type,
         promotions=promotions,
         stores=[],
         search_type='promotions',
