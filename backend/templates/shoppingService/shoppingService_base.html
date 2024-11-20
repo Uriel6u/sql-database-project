@@ -367,6 +367,45 @@
     }
 
     </style>
+
+<style>
+    .toggle-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .toggleSwitchContainer {
+        position: relative;
+        width: 60px;
+        height: 30px;
+        background: #ccc;
+        border-radius: 15px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .toggleSwitchContainer input[type="checkbox"] {
+        display: none;
+    }
+
+    .toggleSwitchContainer span {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 26px;
+        height: 26px;
+        background: white;
+        border-radius: 50%;
+        transition: left 0.3s;
+    }
+
+    .toggleSwitchContainer input[type="checkbox"]:checked + span {
+        left: 32px;
+        background: #6BADCE;
+    }
+</style>
 </head>
 
 <body>
