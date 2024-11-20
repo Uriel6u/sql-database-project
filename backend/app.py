@@ -1,5 +1,5 @@
-# Import jsonify to return JSON responses
-from flask import Flask, jsonify, render_template, request, redirect, url_for, session
+
+from flask import Flask, render_template, request, redirect, url_for, session
 from werkzeug.security import check_password_hash, generate_password_hash
 import mysql.connector
 from dotenv import load_dotenv
@@ -44,16 +44,138 @@ def home():
         # If not logged in, redirect to the login page
         return redirect(url_for('login'))
     
-@app.route("/search")
+@app.route('/search', methods=['GET'])
 def search():
-    if 'username' in session:
-        # If logged in, render the home page with the username
-        account_type = session['account_type']
-        return render_template('shoppingService/search.html', username=session['username'], account_type=account_type, current_page='search')
-    else:
-        # If not logged in, redirect to the login page
-        return redirect(url_for('login'))
+    # Fetch cities for dropdown
+    cursor.execute("SELECT DISTINCT city FROM Stores")
+    cities = [row['city'] for row in cursor.fetchall()]
+
+    # Hardcoded store types (ENUM values in the database)
+    store_types = [
+        "Electronics", "Clothing", "Grocery", "Furniture", "Sports",
+        "Books", "Personal Care", "Department Store", "Other"
+    ]
+
+    # Hardcoded product categories (ENUM values from Products table)
+    product_categories = [
+        "Electronics", "Clothing", "Food", "Furniture", "Sports Equipment",
+        "Toys & Games", "Books", "Arts & Crafts", "Personal Care", "Other"
+    ]
+
+    return render_template(
+        'shoppingService/search.html',
+        cities=cities,
+        store_types=store_types,
+        product_categories=product_categories,
+        stores=[],
+        promotions=[],
+        search_type=None
+    )
+
+
+
+
+@app.route('/search_stores', methods=['POST'])
+def search_stores():
+    # Fetch cities for dropdown
+    cursor.execute("SELECT DISTINCT city FROM Stores")
+    cities = [row['city'] for row in cursor.fetchall()]
+
+    # Hardcoded store types
+    store_types = [
+        "Electronics", "Clothing", "Grocery", "Furniture", "Sports",
+        "Books", "Personal Care", "Department Store", "Other"
+    ]
+
+    # Retrieve form data
+    store_name = request.form.get('store_name')
+    selected_store_type = request.form.get('store_type')
+    selected_city = request.form.get('store_city')
+
+    # Base query
+    query = "SELECT * FROM Stores WHERE 1=1"
+    params = []
+
+    # Add filters dynamically
+    if store_name:
+        query += " AND store_name LIKE %s"
+        params.append(f"%{store_name}%")
+    if selected_store_type:
+        query += " AND store_type = %s"
+        params.append(selected_store_type)
+    if selected_city:
+        query += " AND city = %s"
+        params.append(selected_city)
+
+    cursor.execute(query, params)
+    stores = cursor.fetchall()
+
+    return render_template(
+        'shoppingService/search.html',
+        stores=stores,
+        promotions=[],
+        search_type='stores',
+        cities=cities,
+        store_types=store_types
+    )
+
+
     
+@app.route('/search_promotions', methods=['POST'])
+def search_promotions():
+    # Fetch cities for dropdown
+    cursor.execute("SELECT DISTINCT city FROM Stores")
+    cities = [row['city'] for row in cursor.fetchall()]
+
+    # Hardcoded product categories
+    product_categories = [
+        "Electronics", "Clothing", "Food", "Furniture", "Sports Equipment",
+        "Toys & Games", "Books", "Arts & Crafts", "Personal Care", "Other"
+    ]
+
+    # Retrieve form data
+    min_discount = request.form.get('min_discount') or 0
+    max_discount = request.form.get('max_discount') or 100
+    selected_category = request.form.get('discount_category')
+    selected_city = request.form.get('city')
+
+    # Base query with joins
+    query = """
+    SELECT p.promo_id, p.discount, p.description, s.store_name, s.city, pr.category
+    FROM Promotions p
+    JOIN Stores s ON p.store_id = s.store_id
+    JOIN Products pr ON p.product_id = pr.product_id
+    WHERE p.discount BETWEEN %s AND %s
+    """
+    params = [min_discount, max_discount]
+
+    # Add filters dynamically
+    if selected_category:
+        query += " AND pr.category = %s"
+        params.append(selected_category)
+    if selected_city:
+        query += " AND s.city = %s"
+        params.append(selected_city)
+
+    cursor.execute(query, params)
+    promotions = cursor.fetchall()
+
+    return render_template(
+        'shoppingService/search.html',
+        promotions=promotions,
+        stores=[],
+        search_type='promotions',
+        cities=cities,
+        product_categories=product_categories,
+        min_discount=min_discount,
+        max_discount=max_discount,
+        selected_category=selected_category,
+        selected_city=selected_city
+    )
+
+
+
+
 
 @app.route("/about")
 def about():

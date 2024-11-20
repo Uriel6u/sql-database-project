@@ -3,181 +3,199 @@
 {% block title %}Search{% endblock %}
 
 {% block content %}
-
-    <!-- search page header -->
-    <div class="searchHeader">
-        <h1>Search By:</h1>
+<div class="container mt-5">
+    <!-- Search Header -->
+    <div class="text-center mb-4">
+        <h1 class="display-5">Search By:</h1>
     </div>
 
-    <!-- search by toogle switch -->
-     <div class="toggle-contianer">
-            <input type="checkbox" id="toggle" class="toggleCheckbox"/>
-            <label for="toggle" class="toggleSwitchcontianer">
-                <div>Stores</div>
-                <div>Promotions</div>
-     </div>
-    
-     <!-- Content for search Stores -->
+    <!-- Toggle Switch for Stores and Promotions -->
+    <div class="d-flex justify-content-center align-items-center mb-5">
+        <div class="toggle-container">
+            <label class="toggleSwitchContainer">
+                <input type="checkbox" id="toggle" class="toggleCheckbox" />
+                <span class="slider"></span>
+            </label>
+            <div class="toggle-labels d-flex justify-content-between w-50">
+                <span class="me-3">Stores</span>
+                <span>Promotions</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Stores Section -->
     <div id="storesContent" class="content-section">
-
-        <div class="storenameInputContainer">
-            <input type="text" id="storeSearchInput" class="storeSearch" placeholder="Store Name.."/>
-        </div>
-
-        <div class="storeDropDownFilterContainer">
-            <div>
-                <select class="storeTypeDropdown" name="store_type" required>
-                    <option value="" disabled selected>Select Store Type</option>
-                    <option value="Electronics">Electronics</option>
-                    <option value="Clothing">Clothing</option>
-                    <option value="Grocery">Grocery</option>
-                    <option value="Furniture">Furniture</option>
-                    <option value="Sports">Sports</option>
-                    <option value="Books">Books</option>
-                    <option value="Personal Care">Personal Care</option>
-                    <option value="Department Store">Department Store</option>
-                    <option value="Other">Other</option>
-                </select><br>
+        <form method="POST" action="/search_stores">
+            <div class="storenameInputContainer mb-3">
+                <input
+                    type="text"
+                    id="storeSearchInput"
+                    class="form-control"
+                    name="store_name"
+                    placeholder="Store Name..."
+                    value="{{ store_name if store_name else '' }}"
+                >
             </div>
-            <div>
-                <select class="storeTypeDropdown" name="store_city" required>
-                    <option value="" disabled selected>Select City</option>
-                </select><br>
+
+            <!-- Filter by Store Type and City -->
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="storeTypeDropdown" class="form-label">Store Type</label>
+                    <select class="form-select" id="storeTypeDropdown" name="store_type">
+                        <option value="" disabled {% if not selected_store_type %}selected{% endif %}>Select Store Type</option>
+                        <option value="Electronics" {% if selected_store_type == "Electronics" %}selected{% endif %}>Electronics</option>
+                        <option value="Clothing" {% if selected_store_type == "Clothing" %}selected{% endif %}>Clothing</option>
+                        <option value="Grocery" {% if selected_store_type == "Grocery" %}selected{% endif %}>Grocery</option>
+                        <option value="Furniture" {% if selected_store_type == "Furniture" %}selected{% endif %}>Furniture</option>
+                        <option value="Sports" {% if selected_store_type == "Sports" %}selected{% endif %}>Sports</option>
+                        <option value="Books" {% if selected_store_type == "Books" %}selected{% endif %}>Books</option>
+                        <option value="Personal Care" {% if selected_store_type == "Personal Care" %}selected{% endif %}>Personal Care</option>
+                        <option value="Department Store" {% if selected_store_type == "Department Store" %}selected{% endif %}>Department Store</option>
+                        <option value="Other" {% if selected_store_type == "Other" %}selected{% endif %}>Other</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="storeCityDropdown" class="form-label">City</label>
+                    <select class="form-select" id="storeCityDropdown" name="store_city">
+                        <option value="" disabled {% if not selected_city %}selected{% endif %}>Select City</option>
+                        {% for city in cities %}
+                        <option value="{{ city }}" {% if city == selected_city %}selected{% endif %}>{{ city }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
+
+            <!-- Submit Button -->
+            <div class="text-center mt-3">
+                <button type="submit" class="btn btn-primary">Search Stores</button>
+            </div>
+        </form>
+
+        <!-- Results Table for Stores -->
+        {% if search_type == 'stores' %}
+        <div class="mt-5">
+            <h2>Store Results</h2>
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>Store Name</th>
+                        <th>Location</th>
+                        <th>City</th>
+                        <th>Contact Info</th>
+                        <th>Store Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for store in stores %}
+                    <tr>
+                        <td>{{ store.store_name }}</td>
+                        <td>{{ store.location }}</td>
+                        <td>{{ store.city }}</td>
+                        <td>{{ store.contact_info }}</td>
+                        <td>{{ store.store_type }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
-
-
+        {% endif %}
     </div>
 
-    <!-- Content for search Promotions -->
+    <!-- Search Promotions Section -->
     <div id="promotionsContent" class="content-section" style="display: none;">
-
-        <!-- range slider -->
-        <div class="discountRangeContainer">
-            <div class="card">
-
-                <h2 class="discountHeader">Discount Range</h2>
-
-                <div class="discount-content">
-                    <div>
-                        <label class="discountText">Min % Off</label>
-                        <p class="discountValue" id="min-value">0%</p>
-                    </div>
-
-                    <div>
-                        <label class="discountText">Max % Off</label>
-                        <p class="discountValue" id="max-value">100%</p>
-                    </div>
-
+        <form method="POST" action="/search_promotions">
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="minDiscount" class="form-label">Min Discount (%)</label>
+                    <input type="number" class="form-control" id="minDiscount" name="min_discount" min="0" max="100" value="{{ min_discount if min_discount is not none else '' }}">
                 </div>
-
-                <div class="range-slider">
-                    <div class="range-fill"></div>
-
-                    <input
-                        type="range"
-                        id="min-discount"
-                        class="min-discount"
-                        value="25"
-                        min="0"
-                        max="100"
-                        step="1"
-                    />
-                    <input
-                        type="range"
-                        id="max-discount"
-                        class="max-discount"
-                        value="75"
-                        min="0"
-                        max="100"
-                        step="1"
-                    />
+                <div class="col-md-6">
+                    <label for="maxDiscount" class="form-label">Max Discount (%)</label>
+                    <input type="number" class="form-control" id="maxDiscount" name="max_discount" min="0" max="100" value="{{ max_discount if max_discount is not none else '' }}">
                 </div>
             </div>
-        </div>
 
-        <!-- filter drop downs -->
-        <div class="discountDropDownFilterContainer">
-            <!-- Drop down menus -->
-            <div>
-                <select class="discountTypeDropdown" name="discount-category" required>
-                    <option value="" disabled selected>Select Product Type</option>
-                    <option value="Electronics">Electronics</option>
-                    <option value="Clothes">Clothes</option>
-                    <option value="Food">Food</option>
-                    <option value="Furniture">Furniture</option>
-                    <option value="Sports Equipment">Sports Equipment</option>
-                    <option value="Toys & Games">Toys & Games</option>
-                    <option value="Books">Books</option>
-                    <option value="Arts & Crafts">Arts & Crafts</option>
-                    <option value="Personal Care">Personal Care</option>
-                    <option value="Other">Other</option>
-                </select><br>
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <label for="promotionCategory" class="form-label">Product Category</label>
+                    <select class="form-select" id="promotionCategory" name="discount_category">
+                        <option value="" disabled {% if not selected_category %}selected{% endif %}>Select Category</option>
+                        {% for category in product_categories %}
+                        <option value="{{ category }}" {% if selected_category == category %}selected{% endif %}>{{ category }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="promotionCity" class="form-label">City</label>
+                    <select class="form-select" id="promotionCity" name="city">
+                        <option value="" disabled {% if not selected_city %}selected{% endif %}>Select City</option>
+                        {% for city in cities %}
+                        <option value="{{ city }}" {% if city == selected_city %}selected{% endif %}>{{ city }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
-            <div>
-                <select class="discountTypeDropdown" name="city" required>
-                    <option value="" disabled selected>Select City</option>
-                </select><br>
+
+            <!-- Submit Button -->
+            <div class="text-center mt-3">
+                <button type="submit" class="btn btn-primary">Search Promotions</button>
             </div>
+        </form>
+
+        <!-- Results Table for Promotions -->
+        {% if search_type == 'promotions' %}
+        <div class="mt-5">
+            <h2>Promotions Results</h2>
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>Store Name</th>
+                        <th>City</th>
+                        <th>Discount</th>
+                        <th>Category</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for promotion in promotions %}
+                    <tr>
+                        <td>{{ promotion.store_name }}</td>
+                        <td>{{ promotion.city }}</td>
+                        <td>{{ promotion.discount }}%</td>
+                        <td>{{ promotion.category }}</td>
+                        <td>{{ promotion.description }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
-        
+        {% endif %}
     </div>
+</div>
 
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const toggleCheckbox = document.getElementById('toggle');
+    const storesContent = document.getElementById('storesContent');
+    const promotionsContent = document.getElementById('promotionsContent');
 
-    <!-- script for the toogle button and range slider -->
-    <script>
-        // toogle button script
-        document.getElementById('toggle').addEventListener('change', function () {
-            var storesContent = document.getElementById('storesContent');
-            var promotionsContent = document.getElementById('promotionsContent');
-
-            if (this.checked) {
-                // Show Promotions and hide Stores
-                storesContent.style.display = 'none';
-                promotionsContent.style.display = 'block';
-            } else {
-                // Show Stores and hide Promotions
-                storesContent.style.display = 'block';
-                promotionsContent.style.display = 'none';
-            }
-        });
-
-
-        // range slider script
-        const minInput = document.getElementById("min-discount");
-        const maxInput = document.getElementById("max-discount");
-        const minValueDisplay = document.getElementById("min-value");
-        const maxValueDisplay = document.getElementById("max-value");
-
-        // Function to update the range fill and validate range
-        function validateRange() {
-            let minDiscount = parseInt(minInput.value);
-            let maxDiscount = parseInt(maxInput.value);
-
-            if (minDiscount > maxDiscount) {
-                [minDiscount, maxDiscount] = [maxDiscount, minDiscount]; // Swap values
-            }
-
-            minValueDisplay.innerHTML = minDiscount + "%";
-            maxValueDisplay.innerHTML = maxDiscount + "%";
-
-            // Update range fill (if desired)
-            const rangeFill = document.querySelector(".range-fill");
-            const totalRange = maxInput.max - minInput.min;
-            const minPercent = ((minDiscount - minInput.min) / totalRange) * 100;
-            const maxPercent = ((maxDiscount - minInput.min) / totalRange) * 100;
-
-            rangeFill.style.left = minPercent + "%";
-            rangeFill.style.right = (100 - maxPercent) + "%";
+    // Initial state of the sections
+    function updateSections() {
+        if (toggleCheckbox.checked) {
+            storesContent.style.display = 'none';
+            promotionsContent.style.display = 'block';
+        } else {
+            storesContent.style.display = 'block';
+            promotionsContent.style.display = 'none';
         }
+    }
 
-        // Add event listeners to range inputs
-        minInput.addEventListener("input", validateRange);
-        maxInput.addEventListener("input", validateRange);
+    // Update sections on toggle change
+    toggleCheckbox.addEventListener('change', updateSections);
 
-        // Initial call to set the range display
-        validateRange();
-    </script>
-    
+    // Ensure the correct section displays on page load
+    updateSections();
+});
 
+</script>
 {% endblock %}
