@@ -40,8 +40,10 @@
             <!-- Filter by Store Type and City -->
             <div class="row">
                 <div class="col-md-6">
+                    <!-- dropdown for store type options -->
                     <label for="storeTypeDropdown" class="form-label">Store Type</label>
                     <select class="form-select" id="storeTypeDropdown" name="store_type">
+                        <!-- hardcoded options to match store categories in database -->
                         <option value="" disabled {% if not selected_store_type %}selected{% endif %}>Select Store Type</option>
                         <option value="Electronics" {% if selected_store_type == "Electronics" %}selected{% endif %}>Electronics</option>
                         <option value="Clothing" {% if selected_store_type == "Clothing" %}selected{% endif %}>Clothing</option>
@@ -54,7 +56,9 @@
                         <option value="Other" {% if selected_store_type == "Other" %}selected{% endif %}>Other</option>
                     </select>
                 </div>
+                <!-- dropdown for city options -->
                 <div class="col-md-6">
+                    <!-- dynamic dropdown for cities available in the database -->
                     <label for="storeCityDropdown" class="form-label">City</label>
                     <select class="form-select" id="storeCityDropdown" name="store_city">
                         <option value="" disabled {% if not selected_city %}selected{% endif %}>Select City</option>
@@ -74,6 +78,7 @@
         <!-- Results Table for Stores -->
         {% if search_type == 'stores' %}
         <div class="mt-5">
+            <!-- format of how results will be displayed  -->
             <h2>Store Results</h2>
             <table class="table table-hover table-bordered">
                 <thead>
@@ -105,10 +110,12 @@
     <div id="promotionsContent" class="content-section" style="display: none;">
         <form method="POST" action="/search_promotions">
             <div class="row">
+                <!-- input for min discount val -->
                 <div class="col-md-6">
                     <label for="minDiscount" class="form-label">Min Discount (%)</label>
                     <input type="number" class="form-control" id="minDiscount" name="min_discount" min="0" max="100" value="{{ min_discount if min_discount is not none else '' }}">
                 </div>
+                <!-- input for max discount val -->
                 <div class="col-md-6">
                     <label for="maxDiscount" class="form-label">Max Discount (%)</label>
                     <input type="number" class="form-control" id="maxDiscount" name="max_discount" min="0" max="100" value="{{ max_discount if max_discount is not none else '' }}">
@@ -117,6 +124,7 @@
 
             <div class="row mt-3">
                 <div class="col-md-6">
+                    <!-- dynamic dropdown for product categories in database (autopopulates) -->
                     <label for="promotionCategory" class="form-label">Product Category</label>
                     <select class="form-select" id="promotionCategory" name="discount_category">
                         <option value="" disabled {% if not selected_category %}selected{% endif %}>Select Category</option>
@@ -126,6 +134,7 @@
                     </select>
                 </div>
                 <div class="col-md-6">
+                    <!-- dynamic dropdown for cities available in database (autopopulates) -->
                     <label for="promotionCity" class="form-label">City</label>
                     <select class="form-select" id="promotionCity" name="city">
                         <option value="" disabled {% if not selected_city %}selected{% endif %}>Select City</option>
@@ -173,6 +182,7 @@
     </div>
 </div>
 
+<!-- script for the toggle switch functionality -->
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const toggleCheckbox = document.getElementById('toggle');

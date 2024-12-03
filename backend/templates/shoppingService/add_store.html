@@ -7,23 +7,29 @@
 <div class="container">
     <h3>Add Store</h3>
     <form method="POST" action="/add_store">
+        <!-- Input label for store name -->
         <div class="mb-3">
             <label for="store_name" class="form-label">Store/company Name</label>
             <input type="text" class="form-control" id="store_name" name="store_name" required>
         </div>
+        <!-- Input label for address -->
         <div class="mb-3">
             <label for="location" class="form-label">Location</label>
             <input type="text" class="form-control" id="location" name="location" required>
         </div>
+        <!-- input label for city where store is located -->
         <div class="mb-3">
             <label for="city" class="form-label">City</label>
             <input type="text" class="form-control" id="city" name="city" required>
         </div>
+        <!-- input for business number -->
         <div class="mb-3">
             <label for="contact_info" class="form-label">Contact Number</label>
             <input type="text" class="form-control" id="contact_info" name="contact_info" required>
         </div>
+        <!-- drop down for business category -->
         <select name="store_type" id="store_type" class="form-select" required>
+            <!-- hard coded categories to match our database categories -->
             <option value="" disabled selected>Select Store Type</option>
             <option value="Electronics">Electronics</option>
             <option value="Clothing">Clothing</option>
@@ -35,6 +41,7 @@
             <option value="Department Store">Department Store</option>
             <option value="Other">Other</option>
         </select><br>
+        <!-- submit button to confirm and submit information -->
         <button type="submit" class="btn btn-primary">Add Store</button>
     </form>
 </div>

@@ -7,8 +7,10 @@
 
     <body>
 
+        <!-- dynamic header to welcome each user -->
         <h2 class="welcomeMessage">Welcome To Shopping Service {{ username }}</h2>
         
+        <!-- company quote -->
         <div class="quoteContainer">
             <p class="quote">"Making In Person Shopping Cheaper and Easier"</p>
         </div>
@@ -23,6 +25,7 @@
             <!-- Loop through the top 4 promotions of each category -->
             {% for promotion in promotions %}
                 <div class="promotion-card">
+                    <!-- info displayed for each promotion -->
                     <h4>Store: {{ promotion.store_name }}</h4>
                     <p>Location: {{ promotion.location }}</p>
                     <p>Discount: {{ promotion.discount }}%</p>
