@@ -4,24 +4,31 @@
 
 {% block content %}
 <body>
+    <!-- dynaimc header for user personalization -->
     <h1>Welcome, {{ session['username'] }}!</h1>
     
+    <!-- dynamic message with colored text -->
     {% if message %}
         <p style="color: green;">{{ message }}</p>
     {% endif %}
     
+    <!-- dynamic error message with colored text -->
     {% if error %}
         <p style="color: red;">{{ error }}</p>
     {% endif %}
 
+    <!-- form to update profile info -->
     <h2>Update Profile Information</h2>
     <form method="POST" action="/profile">
+        <!-- input label to update the city where user is located -->
         <label for="city">City:</label>
         <input type="text" id="city" name="city" value="{{ user['city'] }}" required><br><br>
 
+        <!-- input label to update the state where state is located -->
         <label for="state">State:</label>
         <input type="text" id="state" name="state" value="{{ user['state'] }}" required><br><br>
 
+        <!-- submit button to update info -->
         <input type="submit" value="Update Profile">
     </form>
 

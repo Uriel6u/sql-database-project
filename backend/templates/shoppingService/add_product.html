@@ -7,6 +7,7 @@
 <div class="container">
     <h3>Add Product</h3>
     <form method="POST" action="/add_product">
+        <!-- input for product name -->
         <div class="mb-3">
             <label for="product_name" class="form-label">Enter product name</label>
             <input type="text" class="form-control" id="product_name" name="product_name" required>
@@ -19,6 +20,7 @@
                 id="category" 
                 name="category" 
                 required>
+                <!-- Hard codes all the product categories in order to match out database -->
                 <option value="" disabled selected>Select Product Type</option>
                 <option value="Electronics">Electronics</option>
                 <option value="Clothing">Clothing</option>
@@ -32,11 +34,13 @@
                 <option value="Other">Other</option>
             </select>
         </div>
+        <!-- input for the price of the product -->
         <div class="mb-3">
             <label for="price" class="form-label">Price: </label>
             <input type="text" class="form-control" id="price" name="price" required>
             <span class="ms-2">$</span>
         </div>
+        <!-- submit button to confirm inputed information -->
         <button type="submit" class="btn btn-primary">Add Product</button>
     </form>
 </div>
