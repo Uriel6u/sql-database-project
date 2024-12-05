@@ -1,9 +1,10 @@
 {% extends "userAuth/auth_base.html" %}
-
+<!-- This line  extends a base template named "auth_base.html" located in the "userAuth" folder. -->
 {% block title %}Login Page{% endblock %}
 
 
 {% block content %}
+<!-- Content block contains the main content specific to the login page. -->
 <div class="row justify-content-center">
     <div class="col-lg-6 col-md-8 col-sm-10 col-12"> <!-- Responsive column width for various screen sizes -->
         <h1 class="text-center">Login</h1>
@@ -11,10 +12,12 @@
             <p style="color: red;">{{ error }}</p>
         {% endif %}
         <form method="POST" action="/login">
+            <!-- username input field-->
             <div class="mb-3">
                 <label for="username" class="form-label">Username:</label>
                 <input type="text" class="form-control" id="username" name="username" required>
             </div>
+            <!-- passowrd input field-->
             <div class="mb-3">
                 <label for="password" class="form-label">Password:</label>
                 <input type="password" class="form-control" id="password" name="password" required>

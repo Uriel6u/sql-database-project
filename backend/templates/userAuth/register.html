@@ -6,38 +6,39 @@
 <div class="row justify-content-center">
     <div class="col-lg-6 col-md-8 col-sm-10 col-12"> <!-- Responsive column width for various screen sizes -->
         <h3 class="text-center">MyShopping Registration</h3>
-
+          <!--shows error message if the error variable is passed to template -->
         {% if error %}
             <div class="alert alert-danger" role="alert">{{ error }}</div>
         {% endif %}
 
         <form method="POST" action="/register">
-
+            <!-- Registration form by POST method to send data to the /register route -->
+             <!--Nmae input field-->
             <div class="mb-3">
                 <label for="registerName" class="form-label">Name</label>
                 <input type="text" class="form-control w-100" id="registerName" name="name" placeholder="Enter Name" required>
             </div>
-
+             <!--username input field-->
             <div class="mb-3">
                 <label for="registerUsername" class="form-label">Username</label>
                 <input type="text" class="form-control w-100" id="registerUsername" name="username" placeholder="Enter username" required>
             </div>
-
+             <!--email input field-->
             <div class="mb-3">
                 <label for="registerEmail" class="form-label">Email</label>
                 <input type="email" class="form-control w-100" id="registerEmail" name="email" placeholder="Enter email" required>
             </div>
-
+             <!--passowrd input field-->
             <div class="mb-3">
                 <label for="registerPassword" class="form-label">Password</label>
                 <input type="password" class="form-control w-100" id="registerPassword" name="password" placeholder="Enter password" required>
             </div>
-
+             <!--city input field-->
             <div class="mb-3">
                 <label for="registerCity" class="form-label">City</label>
                 <input type="text" class="form-control w-100" id="registerCity" name="city" placeholder="Enter city" required>
             </div>
-
+             <!--state input field-->
             <div class="mb-3">
                 <label for="registerState" class="form-label">State</label>
                 <input type="text" class="form-control w-100" id="registerState" name="state" placeholder="Enter state" required>
