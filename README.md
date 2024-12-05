@@ -18,7 +18,7 @@ Features
 
 
 
-## TO RUN Project:
+## TO RUN the Project:
 ## On vs code studio preffered IDE,
 Make sure you have clone the repository and created your own branches.
 git checkout -b <branch-name> --Replace <branch-name> with a name your name or task you're working on
