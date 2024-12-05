@@ -128,7 +128,7 @@ def generate_stores(n):
     db.commit()
 
 
-# Define realistic price ranges for each product category
+# Define price ranges for each product category
 category_price_ranges = {
     'Electronics': (100, 2000),
     'Clothing': (10, 150),
@@ -140,10 +140,10 @@ category_price_ranges = {
     'Arts & Crafts': (10, 200),
     'Personal Care': (5, 50),
 }
-# Generate Products
+# Generate the Products
 def generate_products(n):
     for _ in range(n):
-        # Select a random category and product
+        # select a random category and product
         category = random.choice(list(category_products.keys()))
         product_name = random.choice(category_products[category])
         
