@@ -39,3 +39,7 @@ Now, we will set up your environment to match mines so the project works on your
     pip install -r requirements.txt
 
 8. Finally cd to backend folder level and run python app.py to start webpage
+
+
+Disclaimer
+Some basic form inputs and template layouts in this project were created with the help of OpenAI's GPT to focus on core functionality like database management and backend logic. All content was reviewed and tailored to project needs.
