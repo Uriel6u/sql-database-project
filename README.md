@@ -10,12 +10,10 @@ Features
 - Effective querying to demonstrate the use of SQL and database skills.
 - User interface to interact with the database and show results
 
-  Tech Stack
-  Database: MySQL workbench
-  Backend: Node.js, Python
-  Frontend: React(javascript), HTML, CSS
-  Tools: GitHub
-
+  Database: MySQL (MySQL Workbench)
+  Backend: Python, Flask
+  Frontend: HTML, CSS, JavaScript (Flask/Jinja templates)
+  Tools: Git, GitHub
 
 
 ## TO RUN Project:
