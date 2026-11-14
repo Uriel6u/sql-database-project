@@ -1,10 +1,8 @@
-
-
 -- Create project database
 CREATE DATABASE ShoppingDB;
 USE ShoppingDB;
-show tables;
--- users table
+
+-- Users table
 CREATE TABLE Users (
     user_ID INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(100) NOT NULL UNIQUE,
@@ -16,21 +14,21 @@ CREATE TABLE Users (
     account_type ENUM('user', 'business') NOT NULL
 );
 
-
+-- Stores table
 CREATE TABLE Stores (
     store_id INT PRIMARY KEY AUTO_INCREMENT,
     store_name VARCHAR(255) NOT NULL,
     location TEXT NOT NULL,
-    city VARCHAR(100) NOT NULL,  -- New column for city-based searches
+    city VARCHAR(100) NOT NULL,  -- City column for city-based searches
     contact_info VARCHAR(50),
     store_type ENUM(
-        'Electronics', 
-        'Clothing', 
-        'Grocery', 
-        'Furniture', 
-        'Sports', 
-        'Books', 
-        'Personal Care', 
+        'Electronics',
+        'Clothing',
+        'Grocery',
+        'Furniture',
+        'Sports',
+        'Books',
+        'Personal Care',
         'Department Store',
         'Other'
     ) NOT NULL,
@@ -38,9 +36,26 @@ CREATE TABLE Stores (
     FOREIGN KEY (created_by_user) REFERENCES Users(user_ID)
 );
 
+-- Products table (created before Promotions, which references it)
+CREATE TABLE IF NOT EXISTS Products (
+    product_id INT PRIMARY KEY AUTO_INCREMENT,
+    product_name VARCHAR(100) NOT NULL,
+    category ENUM(
+        'Electronics',
+        'Clothing',
+        'Food',
+        'Furniture',
+        'Sports Equipment',
+        'Toys & Games',
+        'Books',
+        'Arts & Crafts',
+        'Personal Care',
+        'Other'
+    ) NOT NULL,
+    price DECIMAL(10, 2)
+);
 
-
--- promotions table
+-- Promotions table
 CREATE TABLE Promotions (
     promo_id INT PRIMARY KEY AUTO_INCREMENT,
     store_id INT,
@@ -53,26 +68,7 @@ CREATE TABLE Promotions (
     FOREIGN KEY (product_id) REFERENCES Products(product_id) ON DELETE CASCADE
 );
 
--- promotions table
-CREATE TABLE IF NOT EXISTS Products (
-    product_id INT PRIMARY KEY AUTO_INCREMENT,
-    product_name VARCHAR(100) NOT NULL,
-    category ENUM(
-        'Electronics', 
-        'Clothing', 
-        'Food', 
-        'Furniture', 
-        'Sports Equipment', 
-        'Toys & Games', 
-        'Books', 
-        'Arts & Crafts', 
-        'Personal Care',
-        'Other'
-    ) NOT NULL,
-    price DECIMAL(10, 2)
-);
-
-SELECT* FROM stores;
-SELECT* FROM users;
-SELECT* FROM products;
-SELECT* FROM promotions;
+SELECT * FROM Stores;
+SELECT * FROM Users;
+SELECT * FROM Products;
+SELECT * FROM Promotions;
