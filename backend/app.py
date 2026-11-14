@@ -318,22 +318,13 @@ def logout():
      session.pop('username', None)
      return redirect(url_for('home'))
 
-@app.route('/check-secret')
-def check_secret():
-    return f"SECRET_KEY is: {app.secret_key}"
 
-@app.route('/check-db')
-def check_db():
-    try:
-        # Replace 'your_table' with an existing table name in your database
-        cursor.execute("SELECT * FROM users LIMIT 1")
-        result = cursor.fetchone()
-        if result:
-            return f"Database connection successful. Sample data: {result}"
-        else:
-            return "Database connection successful but no data found."
-    except mysql.connector.Error as err:
-        return f"Database connection failed: {err}"
+
+@app.route('/profile', methods=['GET', 'POST'])
+def profile():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+
 
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
@@ -437,4 +428,4 @@ def add_product():
     return render_template('shoppingService/add_product.html', account_type=account_type, current_page='add_product')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
